@@ -58,6 +58,14 @@ export struct HomePage {
           .fontWeight(FontWeight.Bolder)
           .fontColor('#ffeceaea')
           .textAlign(TextAlign.Center)
+
+        Button('Schedule')
+          .backgroundColor('#ffa75d1c')
+          .fontSize(12)
+          .onClick(() => {
+            this.yogaVm.navigateToPage('SchedulePage')
+          })
+          .margin({top: 10})
       }
       .zIndex(2)
 

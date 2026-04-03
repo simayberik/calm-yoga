@@ -1,5 +1,7 @@
 import { YOGA_TRAINING, YogaModel } from '../model/YogaModel'
 import { HapticService } from '../services/HapticService'
+import { NotificationService } from '../services/NotificationService'
+import { common } from '@kit.AbilityKit';
 
 @Component
 export struct YogaPage {
@@ -16,8 +18,11 @@ export struct YogaPage {
   @State finished: boolean = false
   @State currPose: YogaModel = YOGA_TRAINING[0]
   private haptic: HapticService = new HapticService();
+  private notification: NotificationService = NotificationService.getInstance();
 
-  aboutToAppear(): void {
+  async aboutToAppear(): Promise<void> {
+    const context = getContext(this) as common.UIAbilityContext;
+    await this.notification.requestPermission(context);
     this.startPose(0)
     this.restartTimerForPose()
   }
@@ -46,16 +51,16 @@ export struct YogaPage {
     this.count = sec * 1000
   }
 
-  private triggerCompletionNotification(): void {
-    console.log('Session Complete: Notification triggered');
+  private async triggerCompletionNotification() {
+    await this.notification.publishNotification('Session Complete', 'You have finished your yoga session. Namaste!');
   }
 
-  private goNextPose() {
+  private async goNextPose() {
     const nextIndex = this.currentIndex + 1
     const pose = YOGA_TRAINING[nextIndex]
 
     if (!pose) {
-      this.triggerCompletionNotification();
+      await this.triggerCompletionNotification();
       this.finished = true
       this.textTimerController.reset()
       this.textTimerController.pause()

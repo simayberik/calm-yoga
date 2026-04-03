@@ -1,4 +1,4 @@
-import { ArcSwiper, ArcSwiperAttribute, ArcDotIndicator, ArcDirection, ArcSwiperController } from '@kit.ArkUI';
+import { ArcSwiper, ArcSwiperAttribute, ArcDotIndicator, ArcDirection, ArcSwiperController, CrownEvent } from '@kit.ArkUI';
 import { YOGA_TRAINING, YogaModel } from '../model/YogaModel'
 import { ArcButton, ArcButtonOptions, ArcButtonPosition, ArcButtonStyleMode, ColorMetrics } from '@kit.ArkUI';
 import { YogaViewModel } from '../viewmodel/YogaViewModel';
@@ -7,7 +7,7 @@ import { YogaViewModel } from '../viewmodel/YogaViewModel';
 export struct TrainingPage {
   private wearableSwiperController: ArcSwiperController = new ArcSwiperController()
   yogaVm: YogaViewModel = new YogaViewModel();
-  swiperIndex: number = 0
+  @State swiperIndex: number = 0
   @State slides: YogaModel[] = []
 
   aboutToAppear(): void {
@@ -49,9 +49,16 @@ export struct TrainingPage {
       ArcSwiper(this.wearableSwiperController) {
         ForEach(this.slides, (y: YogaModel, index: number) => {
           this.SlideView(y)
-        }, (item: string, index: number) => item)
+        }, (item: YogaModel, index: number) => item.title)
       }
-      .index(this.swiperIndex)
+      .index($$this.swiperIndex)
+      .onCrownRotation((event: CrownEvent) => {
+          if (event.degree > 0 && this.swiperIndex < this.slides.length - 1) {
+              this.swiperIndex++
+          } else if (event.degree < 0 && this.swiperIndex > 0) {
+              this.swiperIndex--
+          }
+      })
     }
     .backgroundColor(Color.White)
     .width('100%')

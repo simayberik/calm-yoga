@@ -52,7 +52,8 @@ export struct YogaPage {
   }
 
   private async triggerCompletionNotification() {
-    await this.notification.publishNotification('Session Complete', 'You have finished your yoga session. Namaste!');
+    const context = getContext(this) as common.UIAbilityContext;
+    await this.notification.publishNotification(context, 'Session Complete', 'You have finished your yoga session. Namaste!');
   }
 
   private async goNextPose() {

@@ -25,6 +25,10 @@ CalmYoga is an interactive yoga companion application specifically designed for 
 
 - Haptic Feedback: To ensure a truly "calm" experience, the app utilizes the @ohos.vibrator kit to provide subtle haptic feedback during pose transitions. These vibrations serve as non-intrusive alerts, allowing users to keep their eyes closed or focus on their posture while knowing exactly when to move to the next step.
 
+- **Scheduling & Notifications**: Users can now schedule their yoga sessions ahead of time using the integrated Calendar Kit. Upon completion of a session, the app uses the Notification Kit to provide a mindful alert.
+
+- **Wearable Interaction**: The app now supports the Digital Crown for seamless navigation through yoga poses in the training section.
+
 # Tech Stack
 
 
@@ -41,6 +45,8 @@ CalmYoga is an interactive yoga companion application specifically designed for 
 - `@kit.ArkUI`
 - `@kit.AbilityKit`
 - `@ohos.vibrator`
+- `@kit.NotificationKit`
+- `@kit.CalendarKit`
 
 
 # Directory Structure
@@ -61,12 +67,15 @@ entry/src/main/
 │   ├── pages/
 │   │   ├── HomePage.ets
 │   │   ├── Index.ets
+│   │   ├── SchedulePage.ets
 │   │   ├── TrainingPage.ets
 │   │   └── YogaPage.ets
 │   │
 │   ├── services/
+│   │   ├── CalendarService.ets
 │   │   ├── HapticService.ets
-│   │   └── NavigationService.ets
+│   │   ├── NavigationService.ets
+│   │   └── NotificationService.ets
 │   │
 │   ├── utils/
 │   │   └── ImageBlur.ets

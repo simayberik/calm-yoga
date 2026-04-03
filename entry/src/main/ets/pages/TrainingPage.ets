@@ -9,6 +9,8 @@ export struct TrainingPage {
   yogaVm: YogaViewModel = new YogaViewModel();
   @State swiperIndex: number = 0
   @State slides: YogaModel[] = []
+  private crownAccumulator: number = 0;
+  private readonly CROWN_SENSITIVITY: number = 30; // Threshold in degrees
 
   aboutToAppear(): void {
     this.slides = YOGA_TRAINING
@@ -52,11 +54,20 @@ export struct TrainingPage {
         }, (item: YogaModel, index: number) => item.title)
       }
       .index($$this.swiperIndex)
-      .onCrownRotation((event: CrownEvent) => {
-          if (event.degree > 0 && this.swiperIndex < this.slides.length - 1) {
-              this.swiperIndex++
-          } else if (event.degree < 0 && this.swiperIndex > 0) {
-              this.swiperIndex--
+      .focusable(true)
+      .focusOnTouch(true)
+      .defaultFocus(true)
+      .onDigitalCrown((event: CrownEvent) => {
+          event.stopPropagation();
+          this.crownAccumulator += event.degree;
+
+          if (Math.abs(this.crownAccumulator) >= this.CROWN_SENSITIVITY) {
+              if (this.crownAccumulator > 0 && this.swiperIndex < this.slides.length - 1) {
+                  this.swiperIndex++;
+              } else if (this.crownAccumulator < 0 && this.swiperIndex > 0) {
+                  this.swiperIndex--;
+              }
+              this.crownAccumulator = 0;
           }
       })
     }

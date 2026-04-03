@@ -2,7 +2,7 @@ import { ArcButton, ArcButtonOptions, ArcButtonPosition, ArcButtonStyleMode, Col
 import { YOGA_TRAINING, YogaModel } from '../model/YogaModel';
 import { CalendarService } from '../services/CalendarService';
 import { NavigationService } from '../services/NavigationService';
-import { common } from '@kit.AbilityKit';
+import { common, abilityAccessCtrl, Permissions } from '@kit.AbilityKit';
 
 @Component
 export struct SchedulePage {
@@ -13,17 +13,29 @@ export struct SchedulePage {
 
   async scheduleSession() {
     const context = getContext(this) as common.UIAbilityContext;
-    const now = new Date();
-    const scheduleTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), this.scheduleHour, 0);
+    const permissions: Permissions[] = ['ohos.permission.READ_CALENDAR', 'ohos.permission.WRITE_CALENDAR'];
+    const atManager = abilityAccessCtrl.createAtManager();
 
-    // If today's time passed, schedule for tomorrow
-    if (scheduleTime < now) {
-      scheduleTime.setDate(scheduleTime.getDate() + 1);
+    try {
+      const grantStatus = await atManager.requestPermissionsFromUser(context, permissions);
+      if (grantStatus.authResults.every(res => res === 0)) {
+        const now = new Date();
+        const scheduleTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), this.scheduleHour, 0);
+
+        // If today's time passed, schedule for tomorrow
+        if (scheduleTime < now) {
+          scheduleTime.setDate(scheduleTime.getDate() + 1);
+        }
+
+        const pose = YOGA_TRAINING[this.selectedIndex];
+        await this.calendar.addYogaEvent(context, `CalmYoga: ${pose.title}`, scheduleTime.getTime(), 30);
+        this.nav.pageInfos.pop();
+      } else {
+        console.error('Calendar permission denied');
+      }
+    } catch (err) {
+      console.error(`Permission request failed: ${JSON.stringify(err)}`);
     }
-
-    const pose = YOGA_TRAINING[this.selectedIndex];
-    await this.calendar.addYogaEvent(context, `CalmYoga: ${pose.title}`, scheduleTime.getTime(), 30);
-    this.nav.pageInfos.pop();
   }
 
   build() {
@@ -35,7 +47,7 @@ export struct SchedulePage {
         .fontColor(Color.Black)
 
       Row() {
-        Text('Hour: ')
+        Text('Hour: ').fontColor(Color.Black)
         Counter() {
           Text(this.scheduleHour.toString()).fontColor(Color.Black)
         }.onInc(() => {

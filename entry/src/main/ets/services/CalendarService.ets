@@ -39,8 +39,8 @@ export class CalendarService {
     };
 
     try {
-      await calendar.addEvent(event);
-      console.info('Calendar event added successfully');
+      const eventId = await calendar.addEvent(event);
+      console.info(`Calendar event added successfully, id -> ${eventId}`);
     } catch (err) {
       console.error(`Add calendar event failed: ${JSON.stringify(err)}`);
     }

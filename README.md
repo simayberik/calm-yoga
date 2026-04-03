@@ -34,7 +34,7 @@ CalmYoga is an interactive yoga companion application specifically designed for 
 
 **Tools**: DevEco Studio Vers 5.1.0.842
 
-**Libraries**: 
+**Libraries**:
 
 - `@kit.ImageKit`
 - `@kit.ArkGraphics2D`
@@ -77,6 +77,17 @@ entry/src/main/
 ├── resources/
 ```
 
+# Future Feature Proposals
+
+CalmYoga aims to expand its capabilities by integrating more HarmonyOS kits to provide a more holistic wellness experience. Proposed features include:
+
+- **Health Service Kit**: Heart rate and calorie tracking.
+- **Notification Kit**: Daily reminders and achievement alerts.
+- **Calendar Kit**: Session scheduling and sync.
+- **Live View Kit**: Real-time progress on Always-On Display.
+- **Weather Service Kit**: Weather-aware session recommendations.
+
+For a detailed breakdown of these proposals, see [IDEAS.md](./IDEAS.md).
 
 # Constraints and Restrictions
 
@@ -86,5 +97,5 @@ entry/src/main/
 
 # License
 
-CalmYoga is distributed under the terms of the MIT License. 
+CalmYoga is distributed under the terms of the MIT License.
 See the [LICENSE](/LICENSE) for more information.

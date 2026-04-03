@@ -46,11 +46,16 @@ export struct YogaPage {
     this.count = sec * 1000
   }
 
+  private triggerCompletionNotification(): void {
+    console.log('Session Complete: Notification triggered');
+  }
+
   private goNextPose() {
     const nextIndex = this.currentIndex + 1
     const pose = YOGA_TRAINING[nextIndex]
 
     if (!pose) {
+      this.triggerCompletionNotification();
       this.finished = true
       this.textTimerController.reset()
       this.textTimerController.pause()

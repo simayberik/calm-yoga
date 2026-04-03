@@ -27,7 +27,7 @@ CalmYoga is an interactive yoga companion application specifically designed for 
 
 - **Scheduling & Notifications**: Users can now schedule their yoga sessions ahead of time using the integrated Calendar Kit. Upon completion of a session, the app uses the Notification Kit to provide a mindful alert.
 
-- **Wearable Interaction**: The app now supports the Digital Crown for seamless navigation through yoga poses in the training section.
+- **Wearable Interaction**: The app supports the Digital Crown for seamless navigation through yoga poses in the training section, utilizing specific wearable focus events.
 
 # Tech Stack
 
@@ -44,9 +44,9 @@ CalmYoga is an interactive yoga companion application specifically designed for 
 - `@kit.ArkGraphics2D`
 - `@kit.ArkUI`
 - `@kit.AbilityKit`
-- `@ohos.vibrator`
 - `@kit.NotificationKit`
 - `@kit.CalendarKit`
+- `@ohos.vibrator`
 
 
 # Directory Structure

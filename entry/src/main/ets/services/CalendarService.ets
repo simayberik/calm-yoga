@@ -1,5 +1,6 @@
 import { calendarManager } from '@kit.CalendarKit';
 import { common } from '@kit.AbilityKit';
+import { calendarMgr } from '../entryability/EntryAbility';
 
 export class CalendarService {
   private static instance: CalendarService;
@@ -17,7 +18,7 @@ export class CalendarService {
   private async getCalendar(context: common.Context): Promise<calendarManager.Calendar | undefined> {
     if (this.calendar) return this.calendar;
     try {
-      const manager = calendarManager.getCalendarManager(context);
+      const manager = calendarMgr || calendarManager.getCalendarManager(context);
       this.calendar = await manager.getCalendar();
       return this.calendar;
     } catch (err) {

@@ -62,10 +62,10 @@ export struct TrainingPage {
           this.crownAccumulator += event.degree;
 
           if (Math.abs(this.crownAccumulator) >= this.CROWN_SENSITIVITY) {
-              if (this.crownAccumulator > 0 && this.swiperIndex < this.slides.length - 1) {
-                  this.swiperIndex++;
-              } else if (this.crownAccumulator < 0 && this.swiperIndex > 0) {
-                  this.swiperIndex--;
+              if (this.crownAccumulator > 0) {
+                  this.wearableSwiperController.showNext();
+              } else if (this.crownAccumulator < 0) {
+                  this.wearableSwiperController.showPrevious();
               }
               this.crownAccumulator = 0;
           }

@@ -2,7 +2,6 @@ import { NavigationService } from '../services/NavigationService';
 import { HomePage } from './HomePage';
 import { YogaPage } from './YogaPage';
 import { TrainingPage } from './TrainingPage';
-import { SchedulePage } from './SchedulePage';
 
 @Entry
 @Component
@@ -18,8 +17,6 @@ struct Index {
         TrainingPage();
       } else if (name === 'YogaPage') {
         YogaPage()
-      } else if (name === 'SchedulePage') {
-        SchedulePage()
       }
     }
     .hideTitleBar(true)

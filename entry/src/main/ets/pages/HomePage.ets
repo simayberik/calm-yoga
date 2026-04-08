@@ -3,12 +3,15 @@ import { YogaViewModel } from '../viewmodel/YogaViewModel';
 import { image } from '@kit.ImageKit';
 import { common } from '@kit.AbilityKit';
 import { ImageBlur } from '../utils/ImageBlur';
+import { CalendarService } from '../services/CalendarService';
 
 @Component
 export struct HomePage {
   yogaVm: YogaViewModel = new YogaViewModel();
   @State imagePixelMap: image.PixelMap | null = null;
+  @State streak: number = 0;
   private imageBuffer: ArrayBuffer | undefined = undefined;
+  private calendar: CalendarService = CalendarService.getInstance();
 
   async getFileBuffer(): Promise<ArrayBuffer | undefined> {
     try {
@@ -23,10 +26,10 @@ export struct HomePage {
 
   async aboutToAppear(): Promise<void> {
     this.imageBuffer = await this.getFileBuffer();
-    if (this.imageBuffer === undefined) {
-      return;
+    if (this.imageBuffer !== undefined) {
+      this.imagePixelMap = await ImageBlur(this.imageBuffer);
     }
-    this.imagePixelMap = await ImageBlur(this.imageBuffer);
+    this.streak = await this.calendar.getWeeklyStreak();
   }
 
   build() {
@@ -58,6 +61,15 @@ export struct HomePage {
           .fontWeight(FontWeight.Bolder)
           .fontColor('#ffeceaea')
           .textAlign(TextAlign.Center)
+
+        if (this.streak > 0) {
+          Text(`${this.streak} 🔥`)
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(Color.Orange)
+            .textAlign(TextAlign.Center)
+            .margin({ top: 5 })
+        }
       }
       .zIndex(2)
 

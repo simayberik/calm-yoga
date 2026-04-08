@@ -7,8 +7,10 @@ import { YogaViewModel } from '../viewmodel/YogaViewModel';
 export struct TrainingPage {
   private wearableSwiperController: ArcSwiperController = new ArcSwiperController()
   yogaVm: YogaViewModel = new YogaViewModel();
-  swiperIndex: number = 0
+  @State swiperIndex: number = 0
   @State slides: YogaModel[] = []
+  private crownAccumulator: number = 0;
+  private readonly CROWN_SENSITIVITY: number = 30; // Threshold in degrees
 
   aboutToAppear(): void {
     this.slides = YOGA_TRAINING
@@ -49,9 +51,24 @@ export struct TrainingPage {
       ArcSwiper(this.wearableSwiperController) {
         ForEach(this.slides, (y: YogaModel, index: number) => {
           this.SlideView(y)
-        }, (item: string, index: number) => item)
+        }, (item: YogaModel, index: number) => item.title)
       }
-      .index(this.swiperIndex)
+      .focusable(true)
+      .focusOnTouch(true)
+      .defaultFocus(true)
+      .onDigitalCrown((event: CrownEvent) => {
+          event.stopPropagation();
+          this.crownAccumulator += event.degree;
+
+          if (Math.abs(this.crownAccumulator) >= this.CROWN_SENSITIVITY) {
+              if (this.crownAccumulator > 0) {
+                  this.wearableSwiperController.showNext();
+              } else if (this.crownAccumulator < 0) {
+                  this.wearableSwiperController.showPrevious();
+              }
+              this.crownAccumulator = 0;
+          }
+      })
     }
     .backgroundColor(Color.White)
     .width('100%')

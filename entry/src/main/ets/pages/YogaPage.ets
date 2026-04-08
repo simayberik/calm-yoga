@@ -1,5 +1,7 @@
 import { YOGA_TRAINING, YogaModel } from '../model/YogaModel'
 import { HapticService } from '../services/HapticService'
+import { CalendarService } from '../services/CalendarService'
+import { common } from '@kit.AbilityKit';
 
 @Component
 export struct YogaPage {
@@ -16,6 +18,7 @@ export struct YogaPage {
   @State finished: boolean = false
   @State currPose: YogaModel = YOGA_TRAINING[0]
   private haptic: HapticService = new HapticService();
+  private calendar: CalendarService = CalendarService.getInstance();
 
   aboutToAppear(): void {
     this.startPose(0)
@@ -46,11 +49,12 @@ export struct YogaPage {
     this.count = sec * 1000
   }
 
-  private goNextPose() {
+  private async goNextPose() {
     const nextIndex = this.currentIndex + 1
     const pose = YOGA_TRAINING[nextIndex]
 
     if (!pose) {
+      await this.calendar.addSession('Daily Routine', 30);
       this.finished = true
       this.textTimerController.reset()
       this.textTimerController.pause()

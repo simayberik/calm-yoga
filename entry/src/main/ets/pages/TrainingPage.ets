@@ -1,4 +1,4 @@
-import { ArcSwiper, ArcSwiperAttribute, ArcDotIndicator, ArcDirection, ArcSwiperController, CrownEvent } from '@kit.ArkUI';
+import { ArcSwiper, ArcSwiperAttribute, ArcDotIndicator, ArcDirection, ArcSwiperController } from '@kit.ArkUI';
 import { YOGA_TRAINING, YogaModel } from '../model/YogaModel'
 import { ArcButton, ArcButtonOptions, ArcButtonPosition, ArcButtonStyleMode, ColorMetrics } from '@kit.ArkUI';
 import { YogaViewModel } from '../viewmodel/YogaViewModel';
@@ -53,7 +53,6 @@ export struct TrainingPage {
           this.SlideView(y)
         }, (item: YogaModel, index: number) => item.title)
       }
-      .index($$this.swiperIndex)
       .focusable(true)
       .focusOnTouch(true)
       .defaultFocus(true)
